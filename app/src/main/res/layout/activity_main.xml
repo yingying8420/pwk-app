@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--地图-->
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </com.amap.api.maps.MapView>
+
+    <!--开关层-->
+    <View
+        android:id="@+id/view"
+        android:layout_width="208dp"
+        android:layout_height="115dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/view_shape"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--按钮-->
+    <Button
+        android:id="@+id/buttonPicture"
+        android:layout_width="124dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/bt_shape"
+        android:text="@string/btn_text"
+        android:textColor="@color/act_background"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <!--开关-->
+    <Switch
+        android:id="@+id/switch4"
+        android:layout_width="157dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/yhcpwk"
+        android:textColor="@color/act_background"
+        app:layout_constraintStart_toEndOf="@+id/imageView16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--开关-->
+    <Switch
+        android:id="@+id/switch3"
+        android:layout_width="157dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/whcpwk"
+        android:textColor="@color/act_background"
+        app:layout_constraintStart_toEndOf="@+id/imageView17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--开关-->
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="157dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="92dp"
+        android:text="@string/xjsbpwk"
+        android:textColor="@color/act_background"
+        app:layout_constraintStart_toEndOf="@+id/imageView18"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--图标-->
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="7dp"
+        android:src="@mipmap/green"
+        app:layout_constraintEnd_toStartOf="@+id/switch4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch4" />
+    <!--图标-->
+    <ImageView
+        android:id="@+id/imageView17"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="7dp"
+        android:src="@mipmap/yellow"
+        app:layout_constraintEnd_toStartOf="@+id/switch3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch3" />
+    <!--图标-->
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="5dp"
+        android:src="@mipmap/blue"
+        app:layout_constraintEnd_toStartOf="@+id/switch2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch2" />
+
+
+</android.support.constraint.ConstraintLayout>
