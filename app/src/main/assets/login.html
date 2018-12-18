@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>入河排污口监督管理平台</title>
+</head>
+<body>
+    <div class="wrap">
+        <!-- 登录框 -->
+        <div class="login-content">
+            <h1>入河排污口监督管理平台</h1>
+            <form class="form-horizontal" role="form" action="" method="post">
+                <div class="form-group">
+                    <label for="username" class="col-sm-3 control-label" >用户名：</label>
+                    <div class="col-sm-9">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" value="admin" onkeyup='if(event.keyCode==13) event.stopPropagation();'>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-3 control-label">密码：</label>
+                    <div class="col-sm-9">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码" value="admin">
+                    </div>
+                </div>
+              	
+                <div class="form-group">
+                    <div class=" col-sm-12">
+                        <button type="submit" class="btn btn-primary btn-block btn_login">登录</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+	<!--<script type="text/javascript">     -->
+		<!--// 如果在框架或在对话框中，则弹出提示并跳转到首页-->
+		<!--if(self.frameElement && self.frameElement.tagName == "IFRAME" || $('#left').length > 0 || $('.jbox').length > 0){-->
+			<!--top.layer.confirm('登录超时，请重新登录！', {-->
+				  <!--btn: ['确定'], //按钮-->
+				  <!--shade : [1 , '#fff' , true]-->
+				<!--}, function(){-->
+					<!--top.location = "${Config.baseURL}";-->
+				<!--});-->
+		<!--}-->
+    <!--</script>-->
+</body>
+</html>

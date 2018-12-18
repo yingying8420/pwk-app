@@ -53,21 +53,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-
-        </activity>
-
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="5a058f373f0db0ad5d985dcd3a920f7c" />
 
-        <service android:name="com.amap.api.location.APSService" />
-
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".LocationModeSourceActivity" />
-        <activity android:name=".XunjianActivity">
+        <activity android:name=".XunjianActivity"></activity>
+        <activity android:name=".WebviewDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
