@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <!-- 原始地址：//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/positionPicker.html -->
+    <script type="text/javascript" src="http://192.168.1.146:8181/drainOutlet/static/resource/lib/easyui/jquery.min.js"></script>
+    <base href="//webapi.amap.com/ui/1.0/ui/misc/PositionPicker/examples/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>拖拽选址</title>
+    <style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
+        font-size: 13px;
+    }
+    
+    .map {
+        height: 80%;
+        width: 100%;
+    }
+
+    #bottom {
+        color: #444;
+        background-color: #f8f8f8;
+    }
+    .title {
+        width: 100%;
+        padding: 5px;
+        background-color: #dadada;
+    }
+
+    #btn {
+        border: 1px solid #f5f5f5;
+        border-radius: 5px;
+        margin-left: 15px;
+        background-color: #369;
+        color: #fff;
+        padding: 0.5rem;
+        -webkit-appearance: none;
+        display: inline-block;
+    }
+
+    .c {
+        font-weight: 600;
+        padding-left: 15px;
+        padding-top: 4px;
+        display: block;
+    }
+    #lnglat{
+        display: inline-block;
+        width: 40%;
+        font-size: 14px;
+    }
+    .title,
+    .c,
+    #lnglat {
+        padding-left: 15px;
+    }
+    </style>
+</head>
+
+<body>
+<div id="container" class="map" tabindex="0"></div>
+<div id='bottom'>
+    <div>
+        <div class='title'>选择结果</div>
+        <div class='c'>经纬度:</div>
+        <div id='lnglat'></div>
+        <button id="btn">确 定</button>
+    </div>
+</div>
+<!--引入高德地图JSAPI -->
+<script type="text/javascript" src='//webapi.amap.com/maps?v=1.4.12&key=78bd2fd72d8c491620d2d2bf3830f7a7&plugin=AMap.ToolBar'></script>
+<!--引入UI组件库（1.0版本） -->
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+
+<script type="text/javascript">
+ // 点击事件
+                document.getElementById('btn').addEventListener('click', function(){
+                    alert('您选择的位置为：\n'+ document.getElementById('lnglat').innerText)
+                    alert(lat)
+                    alert(lng)
+                    android.getClient("666666666666666666666");
+                });
+        var lat,lng;
+        AMapUI.loadUI(['misc/PositionPicker'], function(PositionPicker) {
+
+                var map = new AMap.Map('container', {
+                    zoom: 10
+                })
+
+                var positionPicker = new PositionPicker({
+                    mode: 'dragMap',
+                    map: map
+                });
+
+                AMap.plugin('AMap.Geolocation', function () {
+                    geolocation = new AMap.Geolocation({
+                        enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                        timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+                        maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                        showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                        showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+                        panToLocation: true,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                        zoomToAccuracy:true      //定位成功后调整地图视野范围使定位位置及精度范围视野s内可见，默认：false
+                    });
+                    map.addControl(geolocation);
+                    geolocation.getCurrentPosition();
+                    AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+                    AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+
+                });
+
+                positionPicker.on('success', function(positionResult) {
+                    document.getElementById('lnglat').innerHTML = positionResult.position;
+                    lat = positionResult.position.lat;
+                    lng = positionResult.position.lng;
+                });
+                positionPicker.on('fail', function(positionResult) {
+                    document.getElementById('lnglat').innerHTML = '无法获取选择的位置';
+                    document.getElementById('lnglat').style.color = '#ff0000';
+                });
+
+                positionPicker.start();
+
+                // 点击事件
+                document.getElementById('btn').addEventListener('click', function(){
+                    alert('您选择的位置为：\n'+ document.getElementById('lnglat').innerText)
+                    alert(lat)
+                    alert(lng)
+                    android.getClient("666666666666666666666");
+                });
+
+
+         });
+
+    </script>
+</body>
+
+</html>

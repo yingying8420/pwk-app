@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qlpwkLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                style="@style/TextNormal_Black"
+                android:text="记录时间" />
+
+
+            <EditText
+                android:id="@+id/tv_time1"
+                style="@style/EditText_Black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:text="记录时间"/>
+
+
+        </LinearLayout>
+
+        <View
+            style="@style/LineThinMatchStyle"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                style="@style/TextNormal_Black"
+                android:text="清理原因" />
+
+            <TextView
+                android:id="@+id/qlyyTv"
+                style="@style/EditText_Black"
+                android:drawableRight="@drawable/pickerview_jiantou"
+                android:text="请选择..." />
+
+        </LinearLayout>
+
+        <View
+            style="@style/LineThinMatchStyle"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/delete"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:text="确认已清理" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

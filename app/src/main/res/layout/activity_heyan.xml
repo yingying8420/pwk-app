@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/formLayout"
+    android:id="@+id/heyanLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
 
             <TextView
                 style="@style/TextNormal_Black"
-                android:text="记录时间" />
+                android:text="核查时间" />
 
 
             <EditText
@@ -34,71 +34,6 @@
 
         </LinearLayout>
 
-        <View
-            style="@style/LineThinMatchStyle"
-            android:layout_below="@+id/titleTv"
-            android:layout_marginTop="5dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/TextNormal_Black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:enabled="false"
-                android:text="排污口坐标" />
-
-            <EditText
-                style="@style/zuobiaoEdit"
-                android:id="@+id/latlng"
-                android:enabled="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:textColorHint="#8e8e8e"
-                android:hint="排污口坐标"/>
-
-            <Button
-                android:id="@+id/getLatLng"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                style="@style/ButtonStyle"
-                android:layout_weight="2"
-                android:text="获取坐标"/>
-
-
-        </LinearLayout>
-
-        <View
-            style="@style/LineThinMatchStyle"
-            android:layout_below="@+id/titleTv"
-            android:layout_marginTop="5dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                style="@style/TextNormal_Black"
-                android:text="排污口照片" />
-
-            <GridView
-                android:id="@+id/noScrollgridview"
-                android:layout_width="290dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:horizontalSpacing="3dp"
-                android:numColumns="4"
-                android:scrollbars="none"
-                android:verticalSpacing="5dp"></GridView>
-
-        </LinearLayout>
 
         <View
             style="@style/LineThinMatchStyle"
@@ -131,26 +66,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                style="@style/TextNormal_Black"
-                android:text="河流（湖、库）名称" />
-
-            <TextView
-                android:id="@+id/riverTv"
-                style="@style/EditText_Black"
-                android:drawableRight="@drawable/pickerview_jiantou"
-                android:text="请选择..." />
-        </LinearLayout>
-
-        <View
-            style="@style/LineThinMatchStyle"
-            android:layout_marginTop="5dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="10dp" >
 
             <TextView
@@ -174,15 +89,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp" >
 
-                <TextView
-                    style="@style/TextNormal_Black"
-                    android:text="是否潜没" />
+            <TextView
+                style="@style/TextNormal_Black"
+                android:text="是否潜没" />
 
-                <TextView
-                    android:id="@+id/sfqmTv"
-                    style="@style/EditText_Black"
-                    android:drawableRight="@drawable/pickerview_jiantou"
-                    android:text="请选择..." />
+            <TextView
+                android:id="@+id/sfqmTv"
+                style="@style/EditText_Black"
+                android:drawableRight="@drawable/pickerview_jiantou"
+                android:text="请选择..." />
 
         </LinearLayout>
 
@@ -215,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp" >
+
             <TextView
                 style="@style/TextNormal_Black"
                 android:text="排放类型" />
@@ -224,7 +140,9 @@
                 style="@style/EditText_Black"
                 android:drawableRight="@drawable/pickerview_jiantou"
                 android:text="请选择..." />
+
         </LinearLayout>
+
 
         <View
             style="@style/LineThinMatchStyle"
@@ -256,7 +174,7 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/done"
+                android:id="@+id/update"
                 style="@style/ButtonStyle"
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
