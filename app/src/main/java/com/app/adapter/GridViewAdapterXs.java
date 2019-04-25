@@ -1,10 +1,5 @@
 package com.app.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.app.myapp.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -14,12 +9,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-public class GridViewAdapter extends BaseAdapter {
+import com.app.myapp.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GridViewAdapterXs extends BaseAdapter {
 
 	private Context mContext;
 	private List<Bitmap> list = new ArrayList<Bitmap>();
-	
-	public GridViewAdapter() {
+
+	public GridViewAdapterXs() {
 		super();
 	}
 /**
@@ -31,8 +31,8 @@ public class GridViewAdapter extends BaseAdapter {
 		this.notifyDataSetChanged();
 		Log.e(" 3333 ", this.list.size()+"");
 	}
-	
-	public GridViewAdapter(Context mContext,List<Bitmap> list) {
+
+	public GridViewAdapterXs(Context mContext, List<Bitmap> list) {
 		super();
 		this.mContext = mContext;
 		this.list = list;
@@ -42,32 +42,12 @@ public class GridViewAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		Log.e("  ", list.size()+"");
-		if(list==null){
-			return 1;
-		}else if(list.size()==9){
-			return 9;
-		}else{
-			return list.size()+1;
-		}
+		return list == null ? 0 : list.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		if (list != null
-				&& list.size() == 9)
-		{
-			return list.get(position);
-		}
-
-		else if (list == null || position - 1 < 0
-				|| position > list.size())
-		{
-			return null;
-		}
-		else
-		{
-			return list.get(position - 1);
-		}
+		return list == null ? null : list.get(position);
 	}
 
 	@Override
@@ -77,20 +57,20 @@ public class GridViewAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder = null;
+		GridViewAdapterXs.ViewHolder holder = null;
 		if(convertView==null){
-			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_published_grida, null);
-			holder = new ViewHolder();
-			holder.item_grida_image = (ImageView) convertView.findViewById(R.id.item_grida_image);
+			convertView = LayoutInflater.from(mContext).inflate(R.layout.item_published_grida_show, null);
+			holder = new GridViewAdapterXs.ViewHolder();
+			holder.item_grida_image = (ImageView) convertView.findViewById(R.id.item_grida_image_show);
 			convertView.setTag(holder);
 		}else{
-			holder = (ViewHolder) convertView.getTag();
+			holder = (GridViewAdapterXs.ViewHolder) convertView.getTag();
 		}
 
 		if (isShowAddItem(position))
 		{
-			holder.item_grida_image.setImageResource(R.drawable.btn_add_pic);
-			holder.item_grida_image.setBackgroundResource(R.color.bg_gray);
+//			holder.item_grida_image.setImageResource(R.drawable.btn_add_pic);
+//			holder.item_grida_image.setBackgroundResource(R.color.bg_gray);
 
 		}
 		else
@@ -110,7 +90,7 @@ public class GridViewAdapter extends BaseAdapter {
 		int size = list == null ? 0 : list.size();
 		return position == size;
 	}
-	
+
 	class ViewHolder{
 		ImageView item_grida_image;
 	}

@@ -18,7 +18,7 @@ public class Retrofit {
 
   private Retrofit() {
     retrofit2.Retrofit retrofit = new retrofit2.Retrofit.Builder()
-            .baseUrl("http://192.168.1.146:8181/drainOutlet/")
+            .baseUrl("http://192.168.18.234:8080/drainOutlet/")
             //.addConverterFactory(CustomConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

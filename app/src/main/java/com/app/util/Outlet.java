@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 public class Outlet{
     private String id;
@@ -13,7 +14,7 @@ public class Outlet{
     private String updateUser;
     private String createTime;
     private String updateTime;
-    private Timestamp hcTime;
+    private String hcTime;
     private String riverid;
     private BigDecimal outletLongitude;
     private BigDecimal outletLatitude;
@@ -38,6 +39,8 @@ public class Outlet{
     private String rivername;
     private String fullName;
     private List<String> imgGroup;
+    private Map<String, String> fileMap;
+
 
     public String getId() {
         return id;
@@ -79,11 +82,11 @@ public class Outlet{
         this.updateTime = updateTime;
     }
 
-    public Timestamp getHcTime() {
+    public String getHcTime() {
         return hcTime;
     }
 
-    public void setHcTime(Timestamp hcTime) {
+    public void setHcTime(String hcTime) {
         this.hcTime = hcTime;
     }
 
@@ -279,6 +282,14 @@ public class Outlet{
         this.imgGroup = imgGroup;
     }
 
+    public Map<String, String> getFileMap() {
+        return fileMap;
+    }
+
+    public void setFileMap(Map<String, String> fileMap) {
+        this.fileMap = fileMap;
+    }
+
     @Override
     public String toString() {
         return "Outlet{" +
@@ -287,7 +298,7 @@ public class Outlet{
                 ", updateUser='" + updateUser + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
-                ", hcTime='" + hcTime + '\'' +
+                ", hcTime=" + hcTime +
                 ", riverid='" + riverid + '\'' +
                 ", outletLongitude=" + outletLongitude +
                 ", outletLatitude=" + outletLatitude +
@@ -312,6 +323,7 @@ public class Outlet{
                 ", rivername='" + rivername + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", imgGroup=" + imgGroup +
+                ", fileMap=" + fileMap +
                 '}';
     }
 }

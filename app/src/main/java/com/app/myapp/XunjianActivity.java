@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -144,7 +146,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
     // 从相册选择
     public static final int IMAGE_SELECT = 2;
     // 照片缩小比例
-    private static final int SCALE = 5;
+    private static final int SCALE = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +159,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
         retrofit = Retrofit.getRetrofit();
         service = retrofit.getService();
 
+        //排污口照片组件初始化
         init();
 
         //获取组件id
@@ -239,20 +242,20 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                     "请填写排污口尺寸！",Toast.LENGTH_LONG).show();
             return;
         }
-        showAlertDialog("提示", "确定提交排污口信息吗？", "确定", "取消", new DialogInterface.OnClickListener() {
+        showAlertDialog("提示", "确定上报排污口信息吗？", "确定", "取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Outlet outlet = new Outlet();
                 outletSize = pwkcc.getText().toString();
                 outletLatLng = latlng.getText().toString();
                 //添加排污口信息
-                outlet.setOutletType("1");
+                outlet.setOutletType("2");
                 outlet.setOutletLongitude(outletLongitude);
                 outlet.setOutletLatitude(outletLatitude);
                 outlet.setOutletSize(outletSize);
                 outlet.setDeleteFlag("0");
                 outlet.setSourceType("0");
-                outlet.setHcTime(hcTime);//核查时间
+//                outlet.setHcTime(hcTime);//核查时间
                 outlet.setRiverid(riverCode);//河流ID
                 outlet.setRoutingType(xjlxCode);//巡检类型
                 outlet.setOutletYesno(sfqmCode);//是否潜没
@@ -276,6 +279,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                     @Override
                     public void onFailure(Call<Javabean> callAddOutlet, Throwable throwable) {
                         System.out.println("连接失败");
+                        Toast.makeText(XunjianActivity.this,"上报失败！",Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -292,12 +296,12 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
     //判断完成记录并跳转
     public  void  isDone(Javabean res){
         if(res.getStatus() == 200){
-            Toast.makeText(XunjianActivity.this,"完成记录！",Toast.LENGTH_LONG).show();
+            Toast.makeText(XunjianActivity.this,"上报成功！",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }else{
-            Toast.makeText(XunjianActivity.this,"记录失败！",Toast.LENGTH_LONG).show();
+            Toast.makeText(XunjianActivity.this,"上报失败！",Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -674,7 +678,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                     // 生成一个图片文件名
                     fileName = String.valueOf(System.currentTimeMillis());
                     // 将处理过的图片添加到缩略图列表并保存到本地
-                    ImageTools.savePhotoToSDCard(newBitmap, FileUtils.SDPATH,fileName);
+                    ImageTools.savePhotoToSDCard(newBitmap, FileUtils.SDPATH, fileName);
                     lists.add(newBitmap);
                     list_path.add(fileName+".jpg");
                     for (int i = 0; i < list_path.size(); i++) {
@@ -699,7 +703,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                             // 生成一个图片文件名
                             fileName = String.valueOf(System.currentTimeMillis());
                             // 将处理过的图片添加到缩略图列表并保存到本地
-                            ImageTools.savePhotoToSDCard(smallBitmap, FileUtils.SDPATH,fileName);
+                            ImageTools.savePhotoToSDCard(smallBitmap, FileUtils.SDPATH, fileName);
                             lists.add(smallBitmap);
                             list_path.add(fileName+".jpg");
 
@@ -763,6 +767,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                     lists.remove(position);
                     FileUtils.delFile(list_path.get(position));
                     list_path.remove(position);
+                    imgGroup.remove(position);
                     gvAdapter.setList(lists);
                 }
             }, new DialogInterface.OnClickListener() {
@@ -817,6 +822,9 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
         Intent intent = new Intent(this, SelectPoint.class);
         startActivityForResult(intent, 1);
     }
+
+
+
 
 
     @Override
@@ -877,4 +885,8 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                 .show();
 
     }
+
+
+
+
 }

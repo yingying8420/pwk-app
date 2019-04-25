@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:textColorHint="#8e8e8e"
-                android:hint="排污口坐标"/>
+                android:hint="请获取排污口坐标..."/>
 
             <Button
                 android:id="@+id/getLatLng"
@@ -115,12 +115,15 @@
                 android:text="排污口尺寸" />
 
             <EditText
-                style="@style/EditText_Black"
+                style="@style/EditText_pwkcc"
                 android:id="@+id/pwkcc"
-                android:hint="米"
-                android:textColorHint="#8e8e8e"
-                android:inputType="number"
+                android:hint="请填写排污口尺寸..."
+                android:singleLine="false"
                 />
+
+            <TextView
+                style="@style/TextNormal_Black"
+                android:text="（米）" />
 
         </LinearLayout>
 
@@ -260,7 +263,7 @@
                 style="@style/ButtonStyle"
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
-                android:text="完成记录" />
+                android:text="上报排污口" />
 
 
         </LinearLayout>

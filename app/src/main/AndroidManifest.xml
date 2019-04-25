@@ -100,7 +100,7 @@
         <activity
             android:name=".QlpwkActivity"
             android:launchMode="singleInstance"
-            android:label="标记已清理排污口"
+            android:label="排污口信息"
             android:windowSoftInputMode="stateHidden|stateUnchanged">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

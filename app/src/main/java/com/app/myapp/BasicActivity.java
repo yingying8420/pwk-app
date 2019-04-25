@@ -14,7 +14,6 @@ import org.king.activity.BaseActivity;
 /**
  * 全局工具设置类(测试活动展现区发布)
  *
- * @author 张明杨
  *
  */
 public class BasicActivity extends BaseActivity {

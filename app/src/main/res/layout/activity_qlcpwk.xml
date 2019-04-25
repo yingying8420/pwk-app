@@ -16,48 +16,233 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/TextNormal_Black"
-                android:text="记录时间" />
-
-
-            <EditText
-                android:id="@+id/tv_time1"
-                style="@style/EditText_Black"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="记录时间"/>
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="记录时间" />
+
+
+                <EditText
+                    android:id="@+id/tv_time1"
+                    style="@style/EditText_Black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:text="记录时间"/>
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="排污口类型"
+                    android:drawableRight="@drawable/bitian"
+                    />
+
+                <TextView
+                    android:id="@+id/outletTypeTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
 
 
         </LinearLayout>
 
-        <View
-            style="@style/LineThinMatchStyle"
-            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:id="@+id/pwkxxLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="排污口尺寸"
+                    />
+
+                <EditText
+                    style="@style/EditText_pwkcc"
+                    android:id="@+id/pwkcc"
+                    android:hint="请填写排污口尺寸..."
+                    android:singleLine="false"
+                    />
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="（米）" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="巡检类型"
+                    />
+
+                <TextView
+                    android:id="@+id/xjlxTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="是否潜没"
+                    />
+
+                <TextView
+                    android:id="@+id/sfqmTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="入河方式"
+                    />
+
+                <TextView
+                    android:id="@+id/rhfsTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" >
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="排放类型"
+                    />
+
+                <TextView
+                    android:id="@+id/pflxTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:text="排污口性质"
+                    />
+
+                <TextView
+                    android:id="@+id/pwkxzTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+            </LinearLayout>
+
+            <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:id="@+id/qlyyLayout"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/TextNormal_Black"
-                android:text="清理原因" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:id="@+id/qlyyTv"
-                style="@style/EditText_Black"
-                android:drawableRight="@drawable/pickerview_jiantou"
-                android:text="请选择..." />
+                <TextView
+                    style="@style/TextNormal_Black"
+                    android:drawableRight="@drawable/bitian"
+                    android:text="清理原因" />
+
+                <TextView
+                    android:id="@+id/qlyyTv"
+                    style="@style/EditText_Black"
+                    android:drawableRight="@drawable/pickerview_jiantou"
+                    android:text="请选择..." />
+
+                <View
+                style="@style/LineThinMatchStyle"
+                android:layout_marginTop="5dp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            style="@style/LineThinMatchStyle"
-            android:layout_marginTop="5dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,9 +253,9 @@
                 style="@style/ButtonStyle"
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
-                android:text="确认已清理" />
-
+                android:text="完成记录" />
 
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

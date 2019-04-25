@@ -21,12 +21,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.adapter.GridViewAdapter;
+import com.app.adapter.GridViewAdapterXs;
 import com.app.service.DataService;
 import com.app.util.Data;
 import com.app.util.FileUtils;
@@ -35,6 +37,7 @@ import com.app.util.Javabean;
 import com.app.util.Outlet;
 import com.app.util.Retrofit;
 import com.app.util.SpinnerOption;
+import com.app.util.TFile;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
@@ -61,7 +64,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HeyanActivity extends AppCompatActivity {
+public class HeyanActivity extends AppCompatActivity{
 
     private Retrofit retrofit;
     private DataService service;
@@ -73,6 +76,8 @@ public class HeyanActivity extends AppCompatActivity {
     private Button button = null;
     private Outlet o;
     private Timestamp hcTime;
+    private List<String> newImgGroup;
+    private Map<String, String> fileMap;
 
     //巡检类型
     private TextView xjlxTv;
@@ -116,6 +121,29 @@ public class HeyanActivity extends AppCompatActivity {
     private OptionsPickerView outletTypePickerView;//选择器
     private String outletTypeCode = null;
 
+    //核验选项
+    private LinearLayout hyxxLayout;
+
+    // 图片 九宫格
+    private GridView oldGv;
+    private GridView newGv;
+    // 图片 九宫格适配器
+    private GridViewAdapterXs oldGvAdapter;
+    private GridViewAdapter newGvAdapter;
+
+    // 用于保存图片资源文件
+    private List<Bitmap> lists = new ArrayList<Bitmap>();
+    private List<Bitmap> oldLists = new ArrayList<Bitmap>();
+    // 用于保存图片路径
+    private List<String> list_path = new ArrayList<String>();
+
+    // 拍照
+    public static final int IMAGE_CAPTURE = 1;
+    // 从相册选择
+    public static final int IMAGE_SELECT = 2;
+    // 照片缩小比例
+    private static final int SCALE = 3;
+
 
 
     @Override
@@ -129,18 +157,41 @@ public class HeyanActivity extends AppCompatActivity {
         retrofit = Retrofit.getRetrofit();
         service = retrofit.getService();
 
+        //排污口照片组件初始化
+//        oldGvInit();
+//        newGvInit();
+
         String json = getIntent().getStringExtra("data");
         o = new Gson().fromJson(json,Outlet.class);
+
+        fileMap = o.getFileMap();
+        if(fileMap != null && !fileMap.isEmpty()){
+            for (Map.Entry<String, String> entry : fileMap.entrySet()) {
+                oldLists.add(base64ToBitmap(entry.getValue()));
+            }
+        }
 
         //获取组件id
         time1 = (EditText) findViewById(R.id.tv_time1);//核查时间
         pwkcc = (EditText) findViewById(R.id.pwkcc);//排污口尺寸
+        newImgGroup = new ArrayList<String>();
+//        imgGroup = o.getImgGroup();//排污口图片
 
         //获取当前时间
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");// HH:mm:ss
         Date date = new Date(System.currentTimeMillis());
         time1.setText(simpleDateFormat.format(date));
         hcTime = Timestamp.valueOf(simpleDateFormat.format(date));
+
+        hyxxLayout = (LinearLayout)findViewById(R.id.hyxxLayout);
+        hyxxLayout.setVisibility(View.GONE);
+
+        //排污口类型
+        outletTypeTv = findViewById(R.id.outletTypeTv);
+        outletTypeList = new ArrayList<SpinnerOption>();
+        outletTypeNameList = new ArrayList<String>();
+        initDatas(outletTypeList, outletTypeNameList, "outlettype" );
+        initOutletTypeOptionPicker();
 
         //巡检类型
         xjlxTv = findViewById(R.id.xjlxTv);
@@ -196,7 +247,7 @@ public class HeyanActivity extends AppCompatActivity {
                 outlet.setRiverid(o.getRiverid());
                 outlet.setOutletLatitude(o.getOutletLatitude());
                 outlet.setOutletLongitude(o.getOutletLongitude());
-                outlet.setOutletType("2");
+                outlet.setOutletType(outletTypeCode);
                 outlet.setDeleteFlag(o.getDeleteFlag());
                 outlet.setOutletAddress(o.getOutletAddress());
                 outlet.setOutletCode(o.getOutletCode());
@@ -208,7 +259,7 @@ public class HeyanActivity extends AppCompatActivity {
                 outlet.setOutletPicname(o.getOutletPicname());
                 outlet.setDepname(o.getDepname());
                 outlet.setOutletSize(pwkcc.getText().toString());
-                outlet.setHcTime(hcTime);
+//                outlet.setHcTime(hcTime);
                 outlet.setRoutingType(xjlxCode);//巡检类型
                 outlet.setOutletYesno(sfqmCode);//是否潜没
                 outlet.setOutletRhfs(rhfsCode);//入河方式
@@ -243,8 +294,6 @@ public class HeyanActivity extends AppCompatActivity {
 
     }
 
-
-
     //判断完成记录并跳转
     public  void  isUpdate(Javabean res){
         if(res.getStatus() == 200){
@@ -258,7 +307,7 @@ public class HeyanActivity extends AppCompatActivity {
         }
     }
 
-    private void initDatas(final ArrayList<SpinnerOption> arrList, final ArrayList<String> nameList, String dictCode) {
+    private void initDatas(final ArrayList<SpinnerOption> arrList, final ArrayList<String> nameList, final String dictCode) {
         //模拟获取数据集合
         try{
             Call<Javabean> call = service.getDictCode(URLEncoder.encode(token, "UTF-8"), URLEncoder.encode(dictCode, "UTF-8"));
@@ -273,7 +322,13 @@ public class HeyanActivity extends AppCompatActivity {
                             for (int i = 0; i < list.size(); i++) {
                                 Map<String, String> map = (Map<String, String>)list.get(i);
                                 SpinnerOption c = new SpinnerOption(map.get("itemName"),map.get("itemCode"));
-                                arrList.add(c);
+                                if (dictCode.equals("outlettype")){
+                                    if (!c.getItemCode().equals("1") && !c.getItemCode().equals("3") && !c.getItemCode().equals("5")){
+                                        arrList.add(c);
+                                    }
+                                }else {
+                                    arrList.add(c);
+                                }
                             }
                         }
                         for(SpinnerOption spinnerBean : arrList){
@@ -292,6 +347,42 @@ public class HeyanActivity extends AppCompatActivity {
         }
 
     }
+
+    //初始化排污口类型选择器
+    private void initOutletTypeOptionPicker() {
+        outletTypePickerView = new OptionsPickerBuilder(HeyanActivity.this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                //返回的分别是三个级别的选中位置
+                String tx = outletTypeNameList.get(options1);
+                outletTypeCode = outletTypeList.get(options1).getItemCode();
+                outletTypeTv.setText(tx);
+
+                if(!outletTypeCode.equals("4")){
+                    hyxxLayout.setVisibility(View.VISIBLE);
+                }else{
+                    hyxxLayout.setVisibility(View.GONE);
+                }
+            }
+        })
+                .setDecorView((RelativeLayout)findViewById(R.id.heyanLayout))//必须是RelativeLayout，不设置setDecorView的话，底部虚拟导航栏会显示在弹出的选择器区域
+                .setTitleText("排污口类型")//标题文字
+                .setTitleSize(20)//标题文字大小
+                .setTitleColor(getResources().getColor(R.color.pickerview_title_text_color))//标题文字颜色
+                .setCancelText("取消")//取消按钮文字
+                .setCancelColor(getResources().getColor(R.color.pickerview_cancel_text_color))//取消按钮文字颜色
+                .setSubmitText("确定")//确认按钮文字
+                .setSubmitColor(getResources().getColor(R.color.pickerview_submit_text_color))//确定按钮文字颜色
+                .setContentTextSize(20)//滚轮文字大小
+                .setTextColorCenter(getResources().getColor(R.color.pickerview_center_text_color))//设置选中文本的颜色值
+                .setLineSpacingMultiplier(1.8f)//行间距
+                .setDividerColor(getResources().getColor(R.color.pickerview_divider_color))//设置分割线的颜色
+                .setSelectOptions(0)//设置选择的值
+                .build();
+
+        outletTypePickerView.setPicker(outletTypeNameList);//添加数据
+    }
+
 
     //初始化巡检类型选择器
     private void initXjlxOptionPicker() {
@@ -441,6 +532,12 @@ public class HeyanActivity extends AppCompatActivity {
 
     //下拉菜单点击事件
     private void initEvents() {
+        outletTypeTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                outletTypePickerView.show();
+            }
+        });
         xjlxTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -473,8 +570,236 @@ public class HeyanActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 初始化控件
+     */
+//    private void oldGvInit() {
+//        oldGv = (GridView) findViewById(R.id.oldGv);
+//        oldGvAdapter = new GridViewAdapterXs(this, oldLists);
+//        oldGv.setOnItemClickListener(new OnItemClickListener() {
+//             @Override
+//             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//             }
+//        });
+//        oldGv.setAdapter(oldGvAdapter);
+//        oldGvAdapter.setList(oldLists);
+//    }
+
+//    @Override
+//    protected void onDestroy() {
+//        //删除文件夹及文件
+//        FileUtils.deleteDir();
+//        super.onDestroy();
+//    }
+
+    /**
+     * 初始化控件
+     */
+//    private void newGvInit() {
+//        newGv = (GridView) findViewById(R.id.newGv);
+//        newGvAdapter = new GridViewAdapter(this, lists);
+//        newGv.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//                if (position == getDataSize()) {// 点击“+”号位置添加图片
+//                    showAlertDialog(false, "提示", new String[] { "拍照", "从图库选择", "取消" },
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    switch (which + 1) {
+//                                        case 1:// 拍照
+//                                            captureImage(FileUtils.SDPATH);
+//                                            break;
+//                                        case 2:// 从图库选择
+//                                            selectImage();
+//                                            break;
+//                                        case 3:// 取消
+//                                            break;
+//
+//                                        default:
+//                                            break;
+//                                    }
+//                                }
+//                            });
+//                } else {// 点击图片删除
+//                    showAlertDialog("提示", "是否删除此图片？", "确定", "取消", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            lists.remove(position);
+//                            FileUtils.delFile(list_path.get(position));
+//                            list_path.remove(position);
+//                            newImgGroup.remove(position);
+//                            newGvAdapter.setList(lists);
+//                        }
+//                    }, new DialogInterface.OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            System.out.println("取消");
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//        newGv.setAdapter(newGvAdapter);
+//        newGvAdapter.setList(lists);
+//    }
+
+    /**
+     * 拍照
+     *
+     * @param path
+     *            照片存放的路径
+     */
+//    public void captureImage(String path) {
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        File file = new File(Environment.getExternalStorageDirectory(), "image.jpg");
+//        try {
+//            if (file.exists()) {
+//                file.delete();
+//            }
+//            file.createNewFile();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        // 指定照片保存路径（SD卡），image.jpg为一个临时文件，每次拍照后这个图片都会被替换
+//        Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileProvider", file);
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+//        startActivityForResult(intent, IMAGE_CAPTURE);
+//    }
+
+    /**
+     * 从图库中选取图片
+     */
+//    public void selectImage() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_PICK);
+//        startActivityForResult(intent, IMAGE_SELECT);
+//    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK && resultCode != RESULT_CANCELED) {
+//            String fileName = null;
+//
+//            switch (requestCode) {
+//                case IMAGE_CAPTURE:// 拍照返回
+//                    // 将保存在本地的图片取出并缩小后显示在界面上
+//                    String newPath = Environment.getExternalStorageDirectory() + "/image.jpg";
+//
+//                    Bitmap bitmap = BitmapFactory.decodeFile(newPath);
+//                    Bitmap newBitmap = ImageTools.zoomBitmap(bitmap,bitmap.getWidth() / SCALE, bitmap.getHeight() / SCALE);
+//                    // 由于Bitmap内存占用较大，这里需要回收内存，否则会报out of memory异常
+//                    bitmap.recycle();
+//                    // 生成一个图片文件名
+//                    fileName = String.valueOf(System.currentTimeMillis());
+//                    // 将处理过的图片添加到缩略图列表并保存到本地
+//                    ImageTools.savePhotoToSDCard(newBitmap, FileUtils.SDPATH,fileName);
+//                    lists.add(newBitmap);
+//                    list_path.add(fileName+".jpg");
+//                    for (int i = 0; i < list_path.size(); i++) {
+//                        System.out.println("第"+i+"张照片的地址："+list_path.get(i));
+//                    }
+//
+//                    // 更新GrideView
+//                    newGvAdapter.setList(lists);
+//                    break;
+//                case IMAGE_SELECT:// 选择照片返回
+//                    ContentResolver resolver = getContentResolver();
+//                    // 照片的原始资源地址
+//                    Uri originalUri = data.getData();
+//                    try {
+//                        // 使用ContentProvider通过URI获取原始图片
+//                        Bitmap photo = MediaStore.Images.Media.getBitmap(resolver,originalUri);
+//                        if (photo != null) {
+//                            // 为防止原始图片过大导致内存溢出，这里先缩小原图显示，然后释放原始Bitmap占用的内存
+//                            Bitmap smallBitmap = ImageTools.zoomBitmap(photo,photo.getWidth() / SCALE, photo.getHeight()/ SCALE);
+//                            // 释放原始图片占用的内存，防止out of memory异常发生
+//                            photo.recycle();
+//                            // 生成一个图片文件名
+//                            fileName = String.valueOf(System.currentTimeMillis());
+//                            // 将处理过的图片添加到缩略图列表并保存到本地
+//                            ImageTools.savePhotoToSDCard(smallBitmap, FileUtils.SDPATH, fileName);
+//                            lists.add(smallBitmap);
+//                            list_path.add(fileName+".jpg");
+//
+//                            for (int i = 0; i < list_path.size(); i++) {
+//                                System.out.println("第"+i+"照片的地址："+list_path.get(i));
+//                            }
+//
+//                            // 更新GrideView
+//                            newGvAdapter.setList(lists);
+//                        }
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    break;
+//                default:
+//                    break;
+//            }
+//            if (fileName != null) {
+//                String base64Img = imageToBase64(FileUtils.SDPATH + fileName + ".jpg");
+//                newImgGroup.add(base64Img);
+//            }
+//        }
+
+//    }
 
 
+
+//    private int getDataSize() {
+//        return lists == null ? 0 : lists.size();
+//    }
+
+    /**
+     * 将图片转换成Base64编码的字符串
+     *
+     * @return base64编码的字符串
+     */
+    public static String imageToBase64(String path) {
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        InputStream is = null;
+        byte[] data = null;
+        String result = null;
+        try {
+            is = new FileInputStream(path);
+            //创建一个字符流大小的数组。
+            data = new byte[is.available()];
+            //写入数组
+            is.read(data);
+            //用默认的编码格式进行编码
+            result = Base64.encodeToString(data, Base64.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (null != is) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    //回显下拉框名称
+    public String getDictName(String dictCode, ArrayList<SpinnerOption> list){
+        String dictName = "";
+        for (SpinnerOption spinnerOption : list){
+            if (spinnerOption.getItemCode().equals(dictCode)){
+                dictName = spinnerOption.getItemName();
+            }
+        }
+        return dictName;
+    }
 
     /**
      * 单选列表类型的弹出框
@@ -524,5 +849,33 @@ public class HeyanActivity extends AppCompatActivity {
                 .setNegativeButton(negativeButton, negativeClickListener)
                 .show();
 
+    }
+
+    /**
+     * base64字符串转化成图片
+     */
+    public static Bitmap base64ToBitmap(String base64Data) {
+        Bitmap bitmap = null;
+        Bitmap newBitmap = null;
+        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+        bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        newBitmap = ImageTools.zoomBitmap(bitmap,bitmap.getWidth() / SCALE, bitmap.getHeight() / SCALE);
+        return bitmap;
+
+//        Bitmap bitmap = null;
+//        Bitmap newBitmap = null;
+//        try {
+//            InputStream in = new FileInputStream(path);
+//            byte[] data = new byte[in.available()];
+////            byte[] bitmapArray = Base64.decode(string.split(",")[1], Base64.DEFAULT);
+//            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+//            newBitmap = ImageTools.zoomBitmap(bitmap,bitmap.getWidth() / SCALE, bitmap.getHeight() / SCALE);
+//            // 释放原始图片占用的内存，防止out of memory异常发生
+//            bitmap.recycle();
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return newBitmap;
     }
 }

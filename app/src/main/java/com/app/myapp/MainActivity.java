@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -235,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMyLocation
                 String errorInfo = bundle.getString(MyLocationStyle.ERROR_INFO);
                 // 定位类型，可能为GPS WIFI等，具体可以参考官网的定位SDK介绍
                 int locationType = bundle.getInt(MyLocationStyle.LOCATION_TYPE);
+//                Log.e("amap", "定位信息， code: " + errorCode + " errorInfo: " + errorInfo + " locationType: " + locationType );
 
             } else {
 
@@ -418,6 +420,8 @@ public class MainActivity extends AppCompatActivity implements AMap.OnMyLocation
                 @Override
                 public void onFailure(Call<Javabean> callGetOutlet, Throwable throwable) {
                     System.out.println("连接失败");
+                    Toast.makeText(getApplicationContext(),
+                            "连接失败,请重新选择！",Toast.LENGTH_LONG).show();
                 }
             });
         } catch (UnsupportedEncodingException e) {
