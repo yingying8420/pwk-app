@@ -255,7 +255,7 @@ public class XunjianActivity extends AppCompatActivity implements OnItemClickLis
                 outlet.setOutletSize(outletSize);
                 outlet.setDeleteFlag("0");
                 outlet.setSourceType("0");
-//                outlet.setHcTime(hcTime);//核查时间
+//                outlet.setHcTime("0");//核查时间
                 outlet.setRiverid(riverCode);//河流ID
                 outlet.setRoutingType(xjlxCode);//巡检类型
                 outlet.setOutletYesno(sfqmCode);//是否潜没

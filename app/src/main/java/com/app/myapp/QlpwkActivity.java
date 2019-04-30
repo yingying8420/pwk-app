@@ -222,7 +222,7 @@ public class QlpwkActivity extends AppCompatActivity {
                     outlet.setOutletPwlx(null);//排放类型
                     outlet.setOutletPwxz(null);//排污口性质
                 }else{
-//                    outlet.setHcTime(o.getHcTime());
+                    outlet.setHcTime(o.getHcTime());
                     outlet.setOutletSize(pwkcc.getText().toString());
                     outlet.setRoutingType(xjlxCode);//巡检类型
                     outlet.setOutletYesno(sfqmCode);//是否潜没

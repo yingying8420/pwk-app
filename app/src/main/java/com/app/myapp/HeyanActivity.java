@@ -259,7 +259,7 @@ public class HeyanActivity extends AppCompatActivity{
                 outlet.setOutletPicname(o.getOutletPicname());
                 outlet.setDepname(o.getDepname());
                 outlet.setOutletSize(pwkcc.getText().toString());
-//                outlet.setHcTime(hcTime);
+//                outlet.setHcTime("0");
                 outlet.setRoutingType(xjlxCode);//巡检类型
                 outlet.setOutletYesno(sfqmCode);//是否潜没
                 outlet.setOutletRhfs(rhfsCode);//入河方式
